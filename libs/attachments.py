@@ -1,8 +1,10 @@
 from email.message import EmailMessage, Message
+import email.header
 
 import base64
 import re
 import os
+import sys
 
 class Attachment:
     def __init__(self, filename, content):
@@ -36,16 +38,11 @@ def decode_filename (filename):
         May need to decode from base64 and then from UTF-8 or KOI8-R.
         Besides filename can be splitted into parts.
     """
-    pattern = '=\?([\S]+)\?B\?(\S*)\?='
-    def decode_line(line):
-        match = re.match(pattern, line)
-        if not match:
-            return line
-        encoding, b64encoded = match.groups()
-        return base64.b64decode(b64encoded).decode(encoding)
-    lines = [ decode_line(x.strip()) for x in filename.split()]
-    result = ''.join(lines)
-    return result
+    mime_words = email.header.decode_header(filename)
+    result = ''.join([ 
+        word.decode(encoding or 'utf-8') if isinstance(word, bytes) else word
+        for word, encoding in mime_words ])
+    return result;
 
 def parse_attachments (message: Message):
     result = []
