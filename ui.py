@@ -13,12 +13,12 @@ class UI:
             Column('Messages', 10),
             Column('Progress', 10),
             Column('Result', 8)
-        ])
-        self.table.draw_at((1, 1))
+        ], borders=False)
+        self.table.draw_at((1, 7))
         self.current = Label(100)
-        self.current.draw_at((1, 30))
+        self.current.draw_at((1, 3))
         self.label = Label(100)
-        self.label.draw_at((1, 28))
+        self.label.draw_at((1, 1))
         self.label.set_text('Downloading:')
         self.folders = []
         hide_cursor()

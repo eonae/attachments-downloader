@@ -5,6 +5,7 @@ import base64
 import re
 import os
 import sys
+import logging
 
 class Attachment:
     def __init__(self, filename, content):
@@ -47,8 +48,11 @@ def decode_filename (filename):
 def parse_attachments (message: Message):
     result = []
     for i, part in enumerate(message.walk()):
-        if is_attachment(part):
-            filename = decode_filename(part.get_filename())
-            content = part.get_payload(decode=True)
-            result.append(Attachment(filename, content))
+        try:
+            if is_attachment(part):
+                filename = decode_filename(part.get_filename())
+                content = part.get_payload(decode=True)
+                result.append(Attachment(filename, content))
+        except Exception as ex:
+            logging.error(ex)
     return result

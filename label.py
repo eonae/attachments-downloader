@@ -6,7 +6,7 @@ class Label:
         self.text = ''
         self.width = width
         self.borders = borders
-        self.text_width = width - 2 if not borders else width
+        self.text_width = width - 2 if borders else width
         self.current_position = (1, 1)
 
     def current_text_position (self):
@@ -16,7 +16,7 @@ class Label:
     def set_text(self, value):
         self.clear()
         text = str(value)
-        stripped_text = text[:self.text_width] if len(text) > self.text_width else text 
+        stripped_text = text[:self.text_width] if len(text) > self.text_width else text
         print_at(self.current_text_position(), stripped_text.center(self.text_width))
 
 
@@ -35,11 +35,11 @@ class Label:
 def test():
     hide_cursor()
     clear()
-    label1 = Label(10)
-    label2 = Label(10)
+    label1 = Label(4, borders=False)
+    label2 = Label(4, borders=False)
 
-    label1.draw_at((1, 2))
-    label2.draw_at((12, 2))
+    label1.draw_at((1, 1))
+    label2.draw_at((1, 2))
     sleep(0.5)
     label1.set_text('OK')
     sleep(0.5)
