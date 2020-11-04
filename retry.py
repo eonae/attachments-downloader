@@ -3,13 +3,11 @@ from time import sleep
 def retry(delay, tries):
     def decorator (func):
         def wrapper(*args, **kwargs):
-            x = 0
-            while True:
-                x += 1
+            for _ in range(tries):
                 try:
                     return func(*args, **kwargs)
                 except Exception as ex:
-                    if x >= tries: raise(ex)
                     sleep(delay)
+            raise(ex)
         return wrapper
     return decorator
